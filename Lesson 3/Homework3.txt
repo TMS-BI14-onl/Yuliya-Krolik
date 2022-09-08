@@ -1,0 +1,54 @@
+-- 2.a
+SELECT Name,
+	   CASE WHEN StandardCost = 0 or StandardCost IS NULL THEN 'Not for sale'
+	        WHEN StandardCost > 0 and StandardCost < 100 THEN '<$100'
+			WHEN StandardCost >= 100 and StandardCost < 500 THEN '<$500'
+			ELSE '>=500'
+			END PriceRange
+FROM Production.Product;
+
+--2.b 	
+SELECT ppv.ProductID, ppv.BusinessEntityID, pv.Name
+FROM Purchasing.ProductVendor ppv
+LEFT JOIN Purchasing.Vendor pv
+ON ppv.BusinessEntityID = pv.BusinessEntityID
+	WHERE StandardPrice > 10
+	AND Name LIKE '%X%'
+	OR Name LIKE 'N%';
+
+--2.c
+
+SELECT pv.Name
+FROM Purchasing.Vendor pv
+LEFT JOIN Purchasing.ProductVendor ppv
+ON ppv.BusinessEntityID = pv.BusinessEntityID
+	WHERE ppv.BusinessEntityID IS NULL
+
+--3.a
+
+SELECT pp.Name AS ProductName, pp.StandardCost
+FROM Production.Product pp
+LEFT JOIN Production.ProductModel ppm
+ON pp.ProductModelID = ppm.ProductModelID
+	WHERE ppm.Name LIKE 'LL%';
+
+--3.b
+
+SELECT Name
+FROM Purchasing.Vendor 
+UNION 
+SELECT Name
+FROM Sales.Store 
+ORDER BY Name;
+
+
+--3. ñ
+
+SELECT Name 
+FROM Production.Product pp
+LEFT JOIN Sales.SpecialOfferProduct ssop
+ON pp.ProductID = ssop.ProductID
+LEFT JOIN Sales.SpecialOffer sso
+ON ssop.SpecialOfferID = sso.SpecialOfferID
+GROUP BY Name
+HAVING COUNT (sso.SpecialOfferID) > 1;
