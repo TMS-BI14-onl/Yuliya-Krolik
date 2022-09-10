@@ -1,0 +1,91 @@
+--3.
+-- Row Number, Rank è Dense Rank return the same result when there are no duplicates.
+-- We use OVER (ORDER BY ...) but we do not PARTITION BY
+
+--4.a 
+--no codes beginning with 'T'
+SELECT UnitMeasureCode
+FROM Production.UnitMeasure
+WHERE UnitMeasureCode LIKE 'T%';
+
+--there are 38 unique codes
+SELECT COUNT(DISTINCT UnitMeasureCode) AS DistCode
+FROM Production.UnitMeasure;
+
+INSERT INTO Production.UnitMeasure (UnitMeasureCode, Name, ModifiedDate)
+VALUES ('TT1', 'Test 1',CAST('09-09-2020' AS DATETIME)),
+('TT2', 'Test 2', getdate())
+
+--now there are 2 codes beginning with 'T'
+
+SELECT UnitMeasureCode
+FROM Production.UnitMeasure
+WHERE UnitMeasureCode LIKE 'T%';
+
+
+--4.b
+--create new table with 'T' codes
+SELECT UnitMeasureCode, Name, ModifiedDate
+INTO Production.UnitMeasureTest
+FROM Production.UnitMeasure
+WHERE UnitMeasureCode LIKE 'T%';
+
+--update new table with 'CAN" codes
+INSERT INTO Production.UnitMeasureTest (UnitMeasureCode, Name, ModifiedDate)
+SELECT UnitMeasureCode, Name, ModifiedDate
+FROM Production.UnitMeasure
+WHERE UnitMeasureCode LIKE 'CAN';
+
+--check the result groupped by code
+SELECT UnitMeasureCode
+FROM Production.UnitMeasureTest
+GROUP BY UnitMeasureCode
+
+--4.c
+UPDATE Production.UnitMeasureTest
+SET UnitMeasureCode = 'TTT'
+
+--4.d
+DELETE FROM Production.UnitMeasureTest
+
+--4.e
+SELECT SalesOrderID,
+	   MAX(LineTotal) OVER (PARTITION BY SalesOrderID) AS MaxTotal,
+	   MIN(LineTotal) OVER (PARTITION BY SalesOrderID) AS MinTotal,
+	   AVG(LineTotal) OVER (PARTITION BY SalesOrderID) AS AvgTotal
+FROM Sales.SalesOrderDetail
+WHERE SalesOrderID IN (43659,43664)
+
+--4.f
+SELECT BusinessEntityID,
+       FirstName,
+	   MiddleName,
+	   LastName,
+	   SalesYTD,
+	   SalesLastYear,
+	   RANK() OVER (ORDER BY SalesYTD DESC) as CurrentSalesRank,
+	   RANK() OVER (ORDER BY SalesLastYear DESC) as LastYearSalesRank,
+	   CONCAT(LEFT(UPPER(LastName),3), 'login', TerritoryGroup, ISNULL(NULL, ' ')) AS Login
+FROM Sales.vSalesPerson
+ORDER BY CurrentSalesRank 
+--Current Year TOP Linda	C	Mitchell
+--Last Year TOP Ranjit	R	Varkey Chudukatil
+
+--4.g
+--We shall use CASE WHEN for that.
+--First we find Saturday, add 2 to get business day
+--Then we find Sunday, add 1 to get business day
+--All the rest days will be business days as they are
+SELECT CASE 
+        WHEN DATENAME(WEEKDAY, DATEADD(mm, DATEDIFF(MM, 0, GETDATE()), 0)) = 'Saturday'
+            THEN DATEADD(mm, DATEDIFF(MM, 0, GETDATE()), 0) + 2
+        WHEN DATENAME(WEEKDAY, DATEADD(mm, DATEDIFF(MM, 0, GETDATE()), 0)) = 'Sunday'
+            THEN DATEADD(mm, DATEDIFF(MM, 0, GETDATE()), 0) + 1
+        ELSE DATEADD(mm, DATEDIFF(MM, 0, GETDATE()), 0)
+        END
+
+--5
+--Count(1) = 4 --counts values in the 1st column and returns no.of rows
+--Count(name) = 3 --counts values in the column 'name' excluding null but counting duplicates
+--Count(id) = 2 --counts values in the column 'name' excluding null
+--Count(*) = 4 --counts no.of rows
