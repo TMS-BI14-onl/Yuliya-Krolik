@@ -1,0 +1,14 @@
+Well done!
+
+4.
+f) -0.25
+What is the logic with ISNULL? you're just adding a space symbol for each row.
+
+
+5. -1
+count(1)		4
+count(name)		2
+count(id)		4
+count(*)		4
+
+Mark: 9
