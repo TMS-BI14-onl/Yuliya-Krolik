@@ -1,0 +1,50 @@
+--6.
+CREATE TABLE Patients
+(			Id			INT IDENTITY(1,1),
+			FirstName	NVARCHAR(100),
+			LastName	NVARCHAR (100),
+			SSN			INT NOT NULL PRIMARY KEY,
+			Email		AS CONCAT((LEFT(UPPER(FirstName), 1)), (LEFT(LOWER(LastName), 3)), '@mail.com'),
+			Temp		DEC(4,2),
+			CreatedDate DATE);
+
+--7.
+INSERT INTO Patients (FirstName, LastName, SSN, Temp, Createddate) 
+VALUES
+    ('Anna', 'Smith', '145', '37.22', '2022-09-14'),
+    ('Jason','Black', '328', '36.93', '2022-09-13'),
+	('Christina', 'Grey', '1635', '39.10','2022-09-14');
+
+--8.
+ALTER TABLE Patients
+ADD TempType AS  CASE WHEN Temp <= 37 THEN '<37°C'
+	        WHEN Temp > 37  THEN '>37°C'
+			ELSE 'N/A'
+			END;
+
+--9
+CREATE VIEW Patients_v
+AS
+SELECT Temp * 9/5+32 as TempF
+FROM Patients;
+
+--10.
+CREATE FUNCTION CtoF (@Temp DEC(4,2))
+RETURNS DEC(4,2)
+AS 
+BEGIN
+RETURN @Temp * 9/5+32
+END;
+
+--11.
+DECLARE @date date = GETDATE()
+SET @date = GETDATE()
+
+SELECT CASE 
+        WHEN DATENAME(WEEKDAY, DATEADD(MM, DATEDIFF(MM, 0, @date), 0)) = 'Saturday'
+        THEN DATEADD(MM, DATEDIFF(MM, 0, GETDATE()), 0) + 2
+        WHEN DATENAME(WEEKDAY, DATEADD(mm, DATEDIFF(MM, 0, @date), 0)) = 'Sunday'
+        THEN DATEADD(mm, DATEDIFF(MM, 0, @date), 0) + 1
+        ELSE DATEADD(mm, DATEDIFF(MM, 0, @date), 0)
+        END;
+
