@@ -30,11 +30,15 @@ FROM Patients;
 
 --10.
 CREATE FUNCTION CtoF (@Temp DEC(4,2))
-RETURNS DEC(4,2)
+RETURNS DEC(10,2)
 AS 
 BEGIN
 RETURN @Temp * 9/5+32
 END;
+
+SELECT *, dbo.CtoF  (Temp) AS FahrResult
+FROM Patients
+
 
 --11.
 DECLARE @date date = GETDATE()
@@ -47,4 +51,3 @@ SELECT CASE
         THEN DATEADD(mm, DATEDIFF(MM, 0, @date), 0) + 1
         ELSE DATEADD(mm, DATEDIFF(MM, 0, @date), 0)
         END;
-
