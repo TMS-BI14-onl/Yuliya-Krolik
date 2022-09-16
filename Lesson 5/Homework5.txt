@@ -3,17 +3,19 @@ CREATE TABLE Patients
 (			Id			INT IDENTITY(1,1),
 			FirstName	NVARCHAR(100),
 			LastName	NVARCHAR (100),
-			SSN			INT NOT NULL PRIMARY KEY,
-			Email		AS CONCAT((LEFT(UPPER(FirstName), 1)), (LEFT(LOWER(LastName), 3)), '@mail.com'),
+			SSN			UNIQUEIDENTIFIER DEFAULT NEWID(),
+			Email		AS CONCAT((LEFT(UPPER(FirstName), 1)), (LEFT(LOWER(LastName), 3)), '@mail.com') PERSISTED,
 			Temp		DEC(4,2),
-			CreatedDate DATE);
+			CreatedDate DATE,
+			CONSTRAINT PK_Patients_SSN PRIMARY KEY (SSN));
 
 --7.
-INSERT INTO Patients (FirstName, LastName, SSN, Temp, Createddate) 
+INSERT INTO Patients (FirstName, LastName, Temp, Createddate) 
 VALUES
-    ('Anna', 'Smith', '145', '37.22', '2022-09-14'),
-    ('Jason','Black', '328', '36.93', '2022-09-13'),
-	('Christina', 'Grey', '1635', '39.10','2022-09-14');
+    ('Anna', 'Smith', '37.22', '2022-09-14'),
+    ('Jason','Black', '36.93', '2022-09-13'),
+	('Christina', 'Grey', '39.10','2022-09-14');
+
 
 --8.
 ALTER TABLE Patients
@@ -27,6 +29,7 @@ CREATE VIEW Patients_v
 AS
 SELECT Temp * 9/5+32 as TempF
 FROM Patients;
+
 
 --10.
 CREATE FUNCTION CtoF (@Temp DEC(4,2))
