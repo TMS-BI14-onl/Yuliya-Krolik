@@ -1,0 +1,19 @@
+--2.
+--There are 2 types of procedures in our DB.
+--1.User stored procedures for example:
+--[dbo].[uspGetBillOfMaterials]
+--[dbo].[uspGetEmployeeManagers]
+--[dbo].[uspGetManagerEmployees]
+--[dbo].[uspGetWhereUsedProductID]...etc
+--2.System stored procedures 
+
+--3.
+CREATE PROCEDURE HumanResources.uspNatIDNumberUpdate
+				@BusinessEntityID INT,
+				@NationalIDNumber NVARCHAR(15) OUTPUT
+AS
+UPDATE HumanResources.Employee 
+SET NationalIDNumber = @NationalIDNumber
+WHERE BusinessEntityID = @BusinessEntityID 
+
+EXECUTE HumanResources.uspNatIDNumberUpdate @BusinessEntityID = '15', @NationalIDNumber = '879341111'
