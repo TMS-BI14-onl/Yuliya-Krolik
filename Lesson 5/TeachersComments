@@ -6,3 +6,4 @@ You can find a better value for the variable, not just GETDATE().
 Also, why do you need to pass a value for the variable twice?
 
 Mark: 10
+Test mark: 10
