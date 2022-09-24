@@ -1,0 +1,18 @@
+--2.
+SELECT TOP 1000000
+      md1.first_name,
+	  md2.last_name
+ 
+  FROM MOCK_DATA md1
+CROSS JOIN
+MOCK_DATA md2
+GO
+
+--3.
+--a. When we use CTE structure?
+-- When we need to apply many times to the same derived tables in order to shorten the volume of coding.
+--b. What is the difference between CTE and subquery?
+--CTE can be reqursive, while subquery - can't be
+--CTE optimizes coding, it is more readable than subwuery
+--CTE is reusable, CTE can be used many times within a query and you don't need to copy the code (just use the name)
+
