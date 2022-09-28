@@ -1,0 +1,9 @@
+
+--2
+--we consider that there are minimum 2 tables: table People, table Fathers
+
+SELECT CONCAT_WS(' ', p.FirstName, p.ParentName, p.LastName) as Son,
+		CONCAT_WS(' ', f.FirstName, f.ParentName, f.LastName) as Father
+FROM People p LEFT JOIN Fathers f ON p.ID_Father = f.ID_Father
+WHERE p.FirstName = 'Dmitry'
+
