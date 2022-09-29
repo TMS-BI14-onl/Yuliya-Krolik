@@ -1,0 +1,33 @@
+--1
+SELECT CONCAT_WS(' ', pp.FirstName, pp.MiddleName, pp.LastName, ppp.PhoneNumber) AS PersonData
+FROM Person.Person pp
+LEFT JOIN Person.PersonPhone ppp
+ON pp.BusinessEntityID = ppp.BusinessEntityID
+WHERE ppp.PhoneNumber LIKE '4_5%'
+
+--2 
+SELECT NationalIDNumber,
+	 CASE WHEN DATEDIFF(year, BirthDate, GETDATE()) BETWEEN 17 AND 20 THEN 'Adolescence'
+	 WHEN  DATEDIFF(year, BirthDate, GETDATE()) BETWEEN 21 AND 59 THEN 'Adults'
+	 WHEN DATEDIFF(year, BirthDate, GETDATE()) BETWEEN 60 AND 75 THEN 'Elderly'
+	 WHEN DATEDIFF(year, BirthDate, GETDATE()) BETWEEN 76 AND 90 THEN 'Senile'
+	 ELSE 'Not Available'
+	 END AS AgeCategory
+FROM [HumanResources].[Employee]
+
+--3
+SELECT Name,Color,
+MAX(StandardCost) OVER(PARTITION BY Color)
+FROM Production.Product
+
+--4 BUS PARK
+--Table Drivers_dim (IDDriver, IdentityNo, PassportNo, Address, PhoneNumber, DriverLicenseNo, LicenseCategory)
+--Table Buses_dim (IDBus, CommisionDate, Color, EngineVolume, TechCertificatDate)
+--Table Tickets_dim (IDTicketType, StartDate, EndDate, Cost)
+--Table Root_dim (IDRoot, StartCity, EndCity, Time)
+--Table Ñonductor_dim (IDConductor, IdentityNo, PassportNo, Address, PhoneNumber)
+--Table FuelRefill_dim (IDRefill, FuelType, Quantity, GasStName, GasStAddress, Date)
+--Table Rides_fct(IDRide, IDDriver, IDBus, IDTicketType, IDRoot, IDConductor, IDRefill, PassengerQuantity Date)
+
+--1.Make a list of drivers who have worked more hours than the average for the bus park.
+--2.Make a list of roots with highest and lowest passenger quantity per month (top 3 of each).
