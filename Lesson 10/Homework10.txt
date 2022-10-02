@@ -1,0 +1,11 @@
+--3.
+
+SELECT Year, [1] AS[January], [2] AS [February], [3] AS [December]
+FROM
+(SELECT OrderQty, YEAR(DueDate) AS Year, MONTH(DueDate) AS Month
+FROM Production.WorkOrder) SourceTable
+PIVOT
+(SUM(OrderQty)
+FOR Month
+IN ([1], [2], [3])) As PivotTable
+ORDER BY Year
