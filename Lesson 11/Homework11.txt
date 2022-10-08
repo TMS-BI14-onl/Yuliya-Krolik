@@ -1,0 +1,92 @@
+CREATE TABLE Target_Table (Function_name NVARCHAR (50),
+							Function_count INT)
+--Alex
+MERGE Target_Table
+USING [dbo].[data_for_merge] Source_Table 
+ON Target_Table.Function_name=Source_Table.Alex 
+WHEN NOT MATCHED BY TARGET
+THEN INSERT (Function_name, Function_count)
+VALUES (Source_Table.Alex, 1);
+
+--Barbara
+MERGE Target_Table
+USING [dbo].[data_for_merge] Source_Table 
+ON Target_Table.Function_name=Source_Table.Barbara 
+WHEN MATCHED AND (Target_Table.Function_name= Source_Table.Barbara)
+THEN UPDATE SET Target_Table.Function_count = Target_Table.Function_count+1
+WHEN NOT MATCHED BY TARGET AND Source_Table.Barbara IS NOT NULL
+THEN INSERT (Function_name, Function_count)
+VALUES (Source_Table.Barbara, 1);
+
+--Chris
+MERGE Target_Table
+USING [dbo].[data_for_merge] Source_Table 
+ON Target_Table.Function_name=Source_Table.Chris 
+WHEN MATCHED AND (Target_Table.Function_name= Source_Table.Chris)
+THEN UPDATE SET Target_Table.Function_count = Target_Table.Function_count+1
+WHEN NOT MATCHED BY TARGET AND Source_Table.Chris IS NOT NULL
+THEN INSERT (Function_name, Function_count)
+VALUES (Source_Table.Chris, 1);
+
+--Donna
+MERGE Target_Table
+USING [dbo].[data_for_merge] Source_Table 
+ON Target_Table.Function_name=Source_Table.Donna 
+WHEN MATCHED AND (Target_Table.Function_name= Source_Table.Donna)
+THEN UPDATE SET Target_Table.Function_count = Target_Table.Function_count+1
+WHEN NOT MATCHED BY TARGET AND Source_Table.Donna IS NOT NULL
+THEN INSERT (Function_name, Function_count)
+VALUES (Source_Table.Donna, 1);
+
+--Elton
+MERGE Target_Table
+USING [dbo].[data_for_merge] Source_Table 
+ON Target_Table.Function_name=Source_Table.Elton 
+WHEN MATCHED AND (Target_Table.Function_name= Source_Table.Elton)
+THEN UPDATE SET Target_Table.Function_count = Target_Table.Function_count+1
+WHEN NOT MATCHED BY TARGET AND Source_Table.Elton IS NOT NULL
+THEN INSERT (Function_name, Function_count)
+VALUES (Source_Table.Elton, 1);
+
+--Fred
+MERGE Target_Table
+USING [dbo].[data_for_merge] Source_Table 
+ON Target_Table.Function_name=Source_Table.Fred 
+WHEN MATCHED AND (Target_Table.Function_name= Source_Table.Fred)
+THEN UPDATE SET Target_Table.Function_count = Target_Table.Function_count+1
+WHEN NOT MATCHED BY TARGET AND Source_Table.Fred IS NOT NULL
+THEN INSERT (Function_name, Function_count)
+VALUES (Source_Table.Fred, 1);
+
+--George
+MERGE Target_Table
+USING [dbo].[data_for_merge] Source_Table 
+ON Target_Table.Function_name=Source_Table.George 
+WHEN MATCHED AND (Target_Table.Function_name= Source_Table.George)
+THEN UPDATE SET Target_Table.Function_count = Target_Table.Function_count+1
+WHEN NOT MATCHED BY TARGET AND Source_Table.George IS NOT NULL
+THEN INSERT (Function_name, Function_count)
+VALUES (Source_Table.George, 1);
+
+--Harry
+MERGE Target_Table
+USING [dbo].[data_for_merge] Source_Table 
+ON Target_Table.Function_name=Source_Table.Harry 
+WHEN MATCHED AND (Target_Table.Function_name= Source_Table.Harry)
+THEN UPDATE SET Target_Table.Function_count = Target_Table.Function_count+1
+WHEN NOT MATCHED BY TARGET AND Source_Table.Harry IS NOT NULL
+THEN INSERT (Function_name, Function_count)
+VALUES (Source_Table.Harry, 1);
+
+--Irys
+MERGE Target_Table
+USING [dbo].[data_for_merge] Source_Table 
+ON Target_Table.Function_name=Source_Table.Irys 
+WHEN MATCHED AND (Target_Table.Function_name= Source_Table.Irys)
+THEN UPDATE SET Target_Table.Function_count = Target_Table.Function_count+1
+WHEN NOT MATCHED BY TARGET AND Source_Table.Irys IS NOT NULL
+THEN INSERT (Function_name, Function_count)
+VALUES (Source_Table.Irys, 1);
+
+SELECT *
+FROM Target_Table
