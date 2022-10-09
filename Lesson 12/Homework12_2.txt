@@ -1,0 +1,7 @@
+
+--1 no homework because of ssdt setup failure
+
+--2 The difference is: DB AdventureWorksDW2017 is built up as "Star" (or even "Constellation" as there are several fact_tables) scheme.
+--It has denormalized dimension_tables. This DB will be used easier and faster for analytics and reporting.
+--DB AdventureWorks2017 is bulit up as "Snowflake", it has more normalized tables in it but it uses a lot of Joins in order to get
+--the needed data. So the performance of such DB will be slower.
