@@ -1,0 +1,59 @@
+
+--1
+INSERT INTO manufacturer (name, country_id)
+VALUES 'HP', '4';
+
+--2	
+UPDATE user SET age = age/3
+WHERE name = 'Андрей'
+
+--3
+--3/1
+SELECT name, price
+FROM product
+WHERE price = (SELECT MAX(price) as max_price
+						FROM product)
+
+--3/2
+SELECT TOP 1 WITH TIES name, price
+FROM product
+ORDER BY price DESC
+
+--3/3
+SELECT name, price
+FROM
+(SELECT name, price, MAX(price) OVER () as max_price
+FROM product) as t1
+WHERE price=max_price
+
+--3/4
+SELECT name,price
+FROM
+(SELECT name, price, RANK() OVER (ORDER BY price DESC) as price_rank
+FROM product) t1
+WHERE price_rank=1
+
+--4 
+SELECT u.name
+FROM user u
+LEFT JOIN phone ph
+ON u.id=ph.user_id
+WHERE ph.name like '+3%4'
+OR age > 35;
+
+--5.
+SELECT u.name
+FROM (SELECT TOP 5 user_id, COUNT (user_id) as order_count
+FROM order
+GROUP BY user_id
+ORDER BY order_count DESC) o
+JOIN user u
+ON u.id=o.user_id
+
+
+
+
+
+
+
+
