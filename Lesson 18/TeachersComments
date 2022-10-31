@@ -1,0 +1,11 @@
+Well done!
+
+1
+-0.25
+Incorrect join condition.
+
+3
+-0.5
+No need in subquery. To order by something you don't need it in the select.
+
+Mark: 9
